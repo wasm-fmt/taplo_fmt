@@ -1,0 +1,7 @@
+# https://taplo.tamasfe.dev/configuration/formatter-options.html
+[formatting]
+align_entries = true
+exclude       = ["test_data/**", "test_snapshots/**"]
+indent_string = "\t"
+indent_tables = true
+reorder_keys  = true

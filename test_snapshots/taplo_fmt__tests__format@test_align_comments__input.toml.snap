@@ -1,0 +1,7 @@
+---
+source: src/lib.rs
+expression: output.into_bytes()
+input_file: test_data/test_align_comments/input.toml
+extension: toml
+snapshot_kind: binary
+---

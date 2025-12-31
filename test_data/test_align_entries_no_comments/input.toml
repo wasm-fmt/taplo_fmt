@@ -1,0 +1,4 @@
+
+entry1asdasd =  "string"     # trailing comment
+entry2asd   = "longer_string"        # trailing comment
+a         = "longer_string_hm" # trailing comment

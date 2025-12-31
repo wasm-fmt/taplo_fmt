@@ -1,0 +1,7 @@
+---
+source: src/lib.rs
+expression: output.into_bytes()
+input_file: test_data/table_entries_no_blank_space/input.toml
+extension: toml
+snapshot_kind: binary
+---

@@ -1,0 +1,27 @@
+
+[table]
+
+  entry = "stuff"
+
+  [table.subtable]
+    nested_entry = 2
+
+    [[table.subtable.array]]
+      entry_array = [
+        "value",
+        [
+          "nested_value"
+        ]
+      ]
+
+    [[table.subtable.array]]
+      entry_array = [
+        "value",
+        [
+          "nested_value"
+        ]
+      ]
+
+[not_sub_table]
+
+  another_entry = 3

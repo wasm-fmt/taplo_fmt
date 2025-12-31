@@ -1,0 +1,20 @@
+
+[main]
+my_array = [
+  #Items
+  "a",
+  "b", # Some comment
+  "c", # This is special
+
+  # Other items
+  "d",
+  "e",
+  "f",
+
+  # Some other items we decided not to include
+  # "g",
+  # "h",
+  # "i",
+
+  "item",
+]

@@ -1,0 +1,12 @@
+
+entry1 = "string"        # trailing comment
+entry2 = "longer_string" # trailing comment
+
+my_array = [
+  #Items
+  "abc", # comment
+  "b",   # Some comment
+  "caa", # This is special
+  # comment
+  # Other stuff
+]

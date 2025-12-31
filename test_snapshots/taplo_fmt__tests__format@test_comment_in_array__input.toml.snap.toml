@@ -1,0 +1,8 @@
+
+[features]
+myfeature = [
+  "feature1",
+  # needed because blah blah blah reason that only makes sense when attached to feature2
+  "feature2",
+] # comment2
+nextfeature = []

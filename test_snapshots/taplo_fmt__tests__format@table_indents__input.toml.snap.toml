@@ -1,0 +1,12 @@
+
+[[table]]
+    name = "Root Table 1"
+    [table.nestedtable]
+        name = "Nested parent"
+        [[table.nestedtable.subtable]]
+            name = "Subtable 1"
+        [[table.nestedtable.subtable]]
+            name = "Subtable 2"
+
+[[table]]
+    name = "Root Table 2"

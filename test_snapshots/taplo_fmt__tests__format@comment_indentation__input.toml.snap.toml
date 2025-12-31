@@ -1,0 +1,19 @@
+# aaasd
+
+[profile]
+
+# asd
+# asd
+
+# bsd 
+# bsd
+asd = ""
+
+  # csd
+  [profile.release]
+
+  incremental = true
+  lol = 2            #yo
+  debug = 0          # Set this to 1 or 2 to get more useful backtraces in debugger.
+
+  # asd
