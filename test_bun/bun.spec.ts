@@ -5,7 +5,7 @@ import { Glob } from "bun";
 import { fileURLToPath } from "node:url";
 import { parseSnapshot } from "../test_utils/index.js";
 
-import init, { format } from "../pkg/taplo_fmt";
+import init, { format } from "../pkg/taplo_fmt_web";
 
 await init();
 

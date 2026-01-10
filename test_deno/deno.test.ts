@@ -4,9 +4,7 @@ import { expandGlob } from "jsr:@std/fs";
 import { fromFileUrl, dirname, basename } from "jsr:@std/path";
 import { parseSnapshot } from "../test_utils/index.js";
 
-import init, { format } from "../pkg/taplo_fmt.js";
-
-await init();
+import { format } from "../pkg/taplo_fmt_esm.js";
 
 const project_root = fromFileUrl(import.meta.resolve("../"));
 const snapshots_root = fromFileUrl(import.meta.resolve("../test_snapshots"));

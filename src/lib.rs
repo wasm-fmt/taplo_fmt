@@ -12,6 +12,7 @@ extern "C" {
     pub type Config;
 }
 
+/// Formats the given TOML code with the provided options.
 #[wasm_bindgen]
 pub fn format(code: &str, options: Option<Config>) -> Result<String, String> {
     let options = options

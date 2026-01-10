@@ -6,9 +6,7 @@ import { fileURLToPath } from "node:url";
 import { dirname, basename } from "node:path";
 import { parseSnapshot } from "../test_utils/index.js";
 
-import init, { format } from "../pkg/taplo_fmt_node.js";
-
-await init();
+import { format } from "../pkg/taplo_fmt_node.js";
 
 const project_root = fileURLToPath(import.meta.resolve("../"));
 const snapshots_root = fileURLToPath(import.meta.resolve("../test_snapshots"));

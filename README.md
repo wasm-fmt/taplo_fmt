@@ -16,10 +16,10 @@ npx jsr add @fmt/taplo-fmt
 
 # Usage
 
-```javascript
-import init, { format } from "@wasm-fmt/taplo_fmt";
+## Node.js / Deno / Bun / Bundler
 
-await init();
+```javascript
+import { format } from "@wasm-fmt/taplo_fmt";
 
 const input = `name = "example"
 version = "0.1.0"
@@ -33,9 +33,7 @@ console.log(formatted);
 with custom options:
 
 ```javascript
-import init, { format } from "@wasm-fmt/taplo_fmt";
-
-await init();
+import { format } from "@wasm-fmt/taplo_fmt";
 
 const input = `name = "example"
 version = "0.1.0"
@@ -51,39 +49,41 @@ const formatted = format(input, {
 console.log(formatted);
 ```
 
-For Vite users:
+## Web
 
-Add `"@wasm-fmt/taplo_fmt"` to `optimizeDeps.exclude` in your vite config:
+For web environments, you need to initialize the WASM module manually:
 
-```JSON
-{
-	"optimizeDeps": {
-		"exclude": ["@wasm-fmt/taplo_fmt"]
-	}
-}
+```javascript
+import init, { format } from "@wasm-fmt/taplo_fmt/web";
+
+await init();
+
+const input = `name = "example"
+version = "0.1.0"
+[dependencies]
+serde = "1.0"`;
+
+const formatted = format(input);
+console.log(formatted);
 ```
 
-<details>
-<summary>
-If you cannot change the vite config, you can use another import entry
-
-</summary>
+### Vite
 
 ```JavaScript
 import init, { format } from "@wasm-fmt/taplo_fmt/vite";
 
+await init();
 // ...
 ```
 
-</details>
+## Entry Points
 
-# How does it work?
-
-[Taplo] is a TOML parser, analyzer, and formatter library, written in Rust.
-
-This package is a WebAssembly build of the Taplo formatter, with a JavaScript wrapper.
-
-[Taplo]: https://github.com/tamasfe/taplo
+- `.` - Auto-detects environment (Node.js uses node, Webpack uses bundler, default is ESM)
+- `./node` - Node.js environment (no init required)
+- `./esm` - ESM environments like Deno (no init required)
+- `./bundler` - Bundlers like Webpack (no init required)
+- `./web` - Web browsers (requires manual init)
+- `./vite` - Vite bundler (requires manual init)
 
 # Credits
 

@@ -18,11 +18,32 @@ pkg_json.exports = {
 	".": {
 		types: "./taplo_fmt.d.ts",
 		node: "./taplo_fmt_node.js",
+		webpack: "./taplo_fmt.js",
+		default: "./taplo_fmt_esm.js",
+	},
+	"./esm": {
+		types: "./taplo_fmt.d.ts",
+		default: "./taplo_fmt_esm.js",
+	},
+	"./node": {
+		types: "./taplo_fmt.d.ts",
+		default: "./taplo_fmt_node.js",
+	},
+	"./bundler": {
+		types: "./taplo_fmt.d.ts",
 		default: "./taplo_fmt.js",
 	},
+	"./web": {
+		types: "./taplo_fmt_web.d.ts",
+		default: "./taplo_fmt_web.js",
+	},
 	"./vite": {
-		types: "./taplo_fmt.d.ts",
+		types: "./taplo_fmt_web.d.ts",
 		default: "./taplo_fmt_vite.js",
+	},
+	"./wasm": {
+		types: "./taplo_fmt_bg.wasm.d.ts",
+		default: "./taplo_fmt_bg.wasm",
 	},
 	"./package.json": "./package.json",
 	"./*": "./*",
@@ -32,6 +53,20 @@ fs.writeFileSync(pkg_path, JSON.stringify(pkg_json, null, "\t"));
 
 const jsr_path = path.resolve(pkg_path, "..", "jsr.jsonc");
 pkg_json.name = "@fmt/taplo-fmt";
-pkg_json.exports = "./taplo_fmt.js";
+pkg_json.exports = {
+	".": "./taplo_fmt_esm.js",
+	"./esm": "./taplo_fmt_esm.js",
+	"./node": "./taplo_fmt_node.js",
+	"./bundler": "./taplo_fmt.js",
+	"./web": "./taplo_fmt_web.js",
+	// jsr does not support imports from wasm?init
+	// "./vite": "./taplo_fmt_vite.js",
+	"./wasm": "./taplo_fmt_bg.wasm",
+};
 pkg_json.exclude = ["!**", "*.tgz"];
 fs.writeFileSync(jsr_path, JSON.stringify(pkg_json, null, "\t"));
+
+// prepend ts-self-types to taplo_fmt.js
+const taplo_fmt_path = path.resolve(path.dirname(pkg_path), "taplo_fmt.js");
+let taplo_fmt_text = fs.readFileSync(taplo_fmt_path, { encoding: "utf-8" });
+fs.writeFileSync(taplo_fmt_path, '/* @ts-self-types="./taplo_fmt.d.ts" */\n' + taplo_fmt_text);

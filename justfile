@@ -30,13 +30,13 @@ test-all: test-rust test-wasm
 
 [unix]
 build:
-	wasm-pack build --target=web --scope=wasm-fmt .
+	wasm-pack build --scope=wasm-fmt .
 	cp -R ./extra/. ./pkg/
 	node ./scripts/package.mjs ./pkg/package.json
 
 [windows]
 build:
-	wasm-pack build --target=web --scope=wasm-fmt .
+	wasm-pack build --scope=wasm-fmt .
 	Copy-Item -Recurse -Force ./extra/* ./pkg/
 	node ./scripts/package.mjs ./pkg/package.json
 
@@ -54,3 +54,19 @@ check:
 
 audit:
 	cargo audit
+
+# Bump version (major, minor, patch) or set specific version
+version bump_or_version:
+	#!/usr/bin/env bash
+	if [[ "{{bump_or_version}}" =~ ^(major|minor|patch)$ ]]; then
+		cargo set-version --bump "{{bump_or_version}}"
+	else
+		cargo set-version "{{bump_or_version}}"
+	fi
+	
+	VERSION=$(cargo pkgid | sed 's/.*[#@]//')
+	
+	git add -A
+	git commit -m "${VERSION}"
+	git tag -a "v${VERSION}" -m "${VERSION}"
+
