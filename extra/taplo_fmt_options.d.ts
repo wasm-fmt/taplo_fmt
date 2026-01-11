@@ -1,7 +1,3 @@
-use wasm_bindgen::prelude::wasm_bindgen;
-
-#[wasm_bindgen(typescript_custom_section)]
-const TS_Types: &'static str = r#"
 /**
  *  See {@link https://taplo.tamasfe.dev/configuration/formatter-options.html}
  */
@@ -104,4 +100,3 @@ export interface Options {
 	 */
 	crlf?: boolean;
 }
-"#;

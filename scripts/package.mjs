@@ -41,10 +41,7 @@ pkg_json.exports = {
 		types: "./taplo_fmt_web.d.ts",
 		default: "./taplo_fmt_vite.js",
 	},
-	"./wasm": {
-		types: "./taplo_fmt_bg.wasm.d.ts",
-		default: "./taplo_fmt_bg.wasm",
-	},
+	"./wasm": "./taplo_fmt_bg.wasm",
 	"./package.json": "./package.json",
 	"./*": "./*",
 };

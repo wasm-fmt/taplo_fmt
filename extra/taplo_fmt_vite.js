@@ -1,7 +1,11 @@
 /* @ts-self-types="./taplo_fmt_web.d.ts" */
+/**
+ * Loads the Wasm module for Vite and bundlers supporting `?init` imports.
+ * @module
+ */
 import init from "./taplo_fmt_bg.wasm?init";
 import * as import_bg from "./taplo_fmt_bg.js";
-const { __wbg_set_wasm, ...wasmImport } = import_bg;
+const { __wbg_set_wasm, format, ...wasmImport } = import_bg;
 
 let wasm, wasmModule;
 
@@ -35,4 +39,4 @@ export function initSync(module) {
 	return finalize_init(instance, module);
 }
 
-export { format } from "./taplo_fmt_bg.js";
+export { format };

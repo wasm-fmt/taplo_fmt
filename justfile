@@ -55,6 +55,13 @@ check:
 audit:
 	cargo audit
 
+ready:
+	just check
+	just build
+	just test-all
+	cd pkg && npm pack --dry-run
+	cd pkg && npx jsr publish --dry-run
+
 # Bump version (major, minor, patch) or set specific version
 version bump_or_version:
 	#!/usr/bin/env bash
@@ -69,4 +76,3 @@ version bump_or_version:
 	git add -A
 	git commit -m "${VERSION}"
 	git tag -a "v${VERSION}" -m "${VERSION}"
-

@@ -4,7 +4,11 @@ use wasm_bindgen::prelude::*;
 #[cfg(test)]
 mod tests;
 
-mod ts_type;
+#[wasm_bindgen(typescript_custom_section)]
+const TS_Types: &'static str = r#"
+import type { Options } from "./taplo_fmt_options.d.ts";
+export type { Options };
+"#;
 
 #[wasm_bindgen]
 extern "C" {
@@ -14,7 +18,10 @@ extern "C" {
 
 /// Formats the given TOML code with the provided options.
 #[wasm_bindgen]
-pub fn format(code: &str, options: Option<Config>) -> Result<String, String> {
+pub fn format(
+    #[wasm_bindgen(param_description = "The TOML code to format")] code: &str,
+    #[wasm_bindgen(param_description = "Formatting options")] options: Option<Config>,
+) -> Result<String, String> {
     let options = options
         .map(Into::into)
         .map(serde_wasm_bindgen::from_value)
