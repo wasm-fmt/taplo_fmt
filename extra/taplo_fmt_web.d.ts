@@ -1,7 +1,16 @@
 import type * as InitOutput from "./taplo_fmt_bg.wasm.d.ts";
 declare type InitOutput = typeof InitOutput;
 
+/**
+ * Input types for asynchronous WASM initialization.
+ * Can be a URL/path to fetch, a Response object, raw bytes, or a pre-compiled WebAssembly.Module.
+ */
 export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembly.Module;
+
+/**
+ * Input types for synchronous WASM initialization.
+ * Must be raw bytes (BufferSource) or a pre-compiled WebAssembly.Module.
+ */
 export type SyncInitInput = BufferSource | WebAssembly.Module;
 
 /**

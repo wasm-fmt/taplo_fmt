@@ -15,10 +15,19 @@ pkg_json.publishConfig = {
 	access: "public",
 };
 pkg_json.exports = {
+	// Deno
+	// - 2.6 supports wasm source phase imports
+	// - 2.1 support wasm instance phase imports
+	// Node.js
+	// - 24.5.0 unflag source phase imports for webassembly
+	// - 24.0.0 supports source phase imports for webassembly
+	// - 22.19.0 backport source/instance phase imports for webassembly
 	".": {
 		types: "./taplo_fmt.d.ts",
-		node: "./taplo_fmt_node.js",
 		webpack: "./taplo_fmt.js",
+		deno: "./taplo_fmt.js",
+		// CJS supports
+		"module-sync": "./taplo_fmt_node.js",
 		default: "./taplo_fmt_esm.js",
 	},
 	"./esm": {
@@ -45,25 +54,35 @@ pkg_json.exports = {
 	"./package.json": "./package.json",
 	"./*": "./*",
 };
+pkg_json.sideEffects = ["./taplo_fmt.js", "./taplo_fmt_node.js", "./taplo_fmt_esm.js"];
 
 fs.writeFileSync(pkg_path, JSON.stringify(pkg_json, null, "\t"));
 
+// JSR
 const jsr_path = path.resolve(pkg_path, "..", "jsr.jsonc");
-pkg_json.name = "@fmt/taplo-fmt";
+pkg_json.name = "@fmt/taplo_fmt";
 pkg_json.exports = {
-	".": "./taplo_fmt_esm.js",
+	".": "./taplo_fmt.js",
 	"./esm": "./taplo_fmt_esm.js",
 	"./node": "./taplo_fmt_node.js",
 	"./bundler": "./taplo_fmt.js",
 	"./web": "./taplo_fmt_web.js",
 	// jsr does not support imports from wasm?init
 	// "./vite": "./taplo_fmt_vite.js",
-	"./wasm": "./taplo_fmt_bg.wasm",
 };
 pkg_json.exclude = ["!**", "*.tgz"];
 fs.writeFileSync(jsr_path, JSON.stringify(pkg_json, null, "\t"));
 
-// prepend ts-self-types to taplo_fmt.js
 const taplo_fmt_path = path.resolve(path.dirname(pkg_path), "taplo_fmt.js");
-let taplo_fmt_text = fs.readFileSync(taplo_fmt_path, { encoding: "utf-8" });
-fs.writeFileSync(taplo_fmt_path, '/* @ts-self-types="./taplo_fmt.d.ts" */\n' + taplo_fmt_text);
+prependTextToFile('/* @ts-self-types="./taplo_fmt.d.ts" */\n', taplo_fmt_path);
+
+const taplo_fmt_d_ts_path = path.resolve(path.dirname(pkg_path), "taplo_fmt.d.ts");
+const doc_path = path.resolve(import.meta.dirname, "doc.d.ts");
+const doc_text = fs.readFileSync(doc_path, { encoding: "utf-8" });
+prependTextToFile(doc_text + "\n", taplo_fmt_d_ts_path);
+
+function prependTextToFile(text, filePath) {
+	const originalContent = fs.readFileSync(filePath, { encoding: "utf-8" });
+	const newContent = text + originalContent;
+	fs.writeFileSync(filePath, newContent);
+}

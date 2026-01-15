@@ -1,9 +1,4 @@
 /* @ts-self-types="./taplo_fmt_web.d.ts" */
-/**
- * Loads the Wasm module via Web Fetch API (browsers).
- * Requires calling init().
- * @module
- */
 import * as import_bg from "./taplo_fmt_bg.js";
 const { __wbg_set_wasm, format, ...wasmImport } = import_bg;
 

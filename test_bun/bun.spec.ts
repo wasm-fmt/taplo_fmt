@@ -12,36 +12,34 @@ await init();
 const project_root = fileURLToPath(import.meta.resolve("../"));
 const snapshots_root = fileURLToPath(import.meta.resolve("../test_snapshots"));
 
-const glob = new Glob("*.snap");
-
-for await (const snap_path of glob.scan({ cwd: snapshots_root })) {
-	const snapshotPath = join(snapshots_root, snap_path);
-	const snapshotContent = await Bun.file(snapshotPath).text();
-	const info = parseSnapshot(snapshotContent);
+for await (const snap_path of new Glob("**/*.snap").scan({ cwd: snapshots_root })) {
+	const full_path = join(snapshots_root, snap_path);
+	const snap_content = await Bun.file(full_path).text();
+	const info = parseSnapshot(snap_content);
 	if (!info) continue;
 
 	const input_path = join(project_root, info.input_file);
-	const case_path = dirname(input_path);
-	const expected_path = `${snapshotPath}.${info.extension}`;
+	const input_dir = dirname(input_path);
+	const expected_path = `${full_path}.${info.extension}`;
 
-	const [inputText, expectedText, optionsText] = await Promise.all([
+	const [input_text, expected_text, options_text] = await Promise.all([
 		Bun.file(input_path).text(),
 		Bun.file(expected_path).text(),
-		Bun.file(join(case_path, "options.json"))
+		Bun.file(join(input_dir, "options.json"))
 			.text()
 			.catch(() => "{}"),
 	]);
 
 	let options;
 	try {
-		options = JSON.parse(optionsText);
+		options = JSON.parse(options_text);
 	} catch (_e) {
 		options = {};
 	}
 
-	const test_name = basename(case_path);
+	const test_name = basename(input_dir);
 	test(test_name, () => {
-		const actual = format(inputText, options);
-		expect(actual).toBe(expectedText);
+		const actual = format(input_text, options);
+		expect(actual).toBe(expected_text);
 	});
 }

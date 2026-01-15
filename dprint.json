@@ -10,8 +10,10 @@
 	"excludes": [
 		"**/*-lock.json",
 		"**/node_modules",
-		"test_data/**",
-		"test_snapshots/**"
+		"test_data",
+		"test_snapshots",
+		"target",
+		"pkg"
 	],
 	"plugins": [
 		"https://plugins.dprint.dev/json-0.21.1.wasm",

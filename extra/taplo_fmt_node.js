@@ -1,9 +1,4 @@
 /* @ts-self-types="./taplo_fmt.d.ts" */
-/**
- * Loads the Wasm module using Node's fs API.
- * Consider using `./esm` entry if your environment supports source phase import.
- * @module
- */
 import { readFileSync } from "node:fs";
 import * as import_bg from "./taplo_fmt_bg.js";
 const { __wbg_set_wasm, format, ...wasmImport } = import_bg;

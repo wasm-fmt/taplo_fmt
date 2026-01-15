@@ -7,7 +7,7 @@ mod tests;
 #[wasm_bindgen(typescript_custom_section)]
 const TS_Types: &'static str = r#"
 import type { Options } from "./taplo_fmt_options.d.ts";
-export type { Options };
+export type * from "./taplo_fmt_options.d.ts";
 "#;
 
 #[wasm_bindgen]

@@ -1,4 +1,4 @@
-name: CI
+name: Test
 
 on:
     workflow_dispatch:
@@ -30,10 +30,19 @@ jobs:
             - uses: actions/checkout@v6
             - uses: taiki-e/install-action@v2
               with:
-                  tool: cargo-audit,dprint,taplo,just
+                  tool: dprint,taplo,just
             - run: just check
             - run: just test-rust
-            - run: just audit
+
+    audit:
+        name: Audit
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v6
+            - uses: taiki-e/install-action@v2
+              with:
+                  tool: cargo-audit
+            - run: cargo audit
 
     wasm-build:
         name: Wasm build
@@ -82,4 +91,5 @@ jobs:
             - uses: oven-sh/setup-bun@v2
               if: matrix.runtime == 'bun'
               name: Install bun
+
             - run: just test-${{ matrix.runtime }}
