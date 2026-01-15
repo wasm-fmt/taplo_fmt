@@ -60,7 +60,7 @@ fs.writeFileSync(pkg_path, JSON.stringify(pkg_json, null, "\t"));
 
 // JSR
 const jsr_path = path.resolve(pkg_path, "..", "jsr.jsonc");
-pkg_json.name = "@fmt/taplo_fmt";
+pkg_json.name = "@fmt/taplo-fmt";
 pkg_json.exports = {
 	".": "./taplo_fmt.js",
 	"./esm": "./taplo_fmt_esm.js",
