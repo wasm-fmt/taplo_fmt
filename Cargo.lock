@@ -443,7 +443,7 @@ dependencies = [
 
 [[package]]
 name = "taplo_fmt"
-version = "0.2.3"
+version = "0.2.4"
 dependencies = [
  "getrandom",
  "insta",
