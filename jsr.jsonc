@@ -1,0 +1,22 @@
+{
+	"$schema": "https://jsr.io/schema/config-file.v1.json",
+	"name": "@fmt/taplo-fmt",
+	"version": "0.2.4",
+	"exports": {
+		".": "./taplo_fmt.js",
+		"./esm": "./taplo_fmt_esm.js",
+		"./node": "./taplo_fmt_node.js",
+		"./bundler": "./taplo_fmt.js",
+		"./web": "./taplo_fmt_web.js"
+	},
+	"publish": {
+		"include": [
+			"taplo_fmt_*",
+			"taplo_fmt.*",
+			"README.md"
+		],
+		"exclude": [
+			"!*"
+		]
+	}
+}

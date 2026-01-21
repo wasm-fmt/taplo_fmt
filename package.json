@@ -1,0 +1,64 @@
+{
+	"name": "@wasm-fmt/taplo_fmt",
+	"type": "module",
+	"collaborators": [
+		"magic-akari <akari.ccino@gmail.com>"
+	],
+	"description": "A WASM Based TOML Formatter",
+	"version": "0.2.4",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/wasm-fmt/taplo_fmt"
+	},
+	"homepage": "https://github.com/wasm-fmt/taplo_fmt",
+	"types": "taplo_fmt.d.ts",
+	"sideEffects": [
+		"./taplo_fmt.js",
+		"./taplo_fmt_node.js",
+		"./taplo_fmt_esm.js"
+	],
+	"keywords": [
+		"wasm",
+		"taplo",
+		"TOML",
+		"formatter"
+	],
+	"publishConfig": {
+		"access": "public"
+	},
+	"exports": {
+		".": {
+			"types": "./taplo_fmt.d.ts",
+			"webpack": "./taplo_fmt.js",
+			"deno": "./taplo_fmt.js",
+			"bun": "./taplo_fmt_node.js",
+			"module-sync": "./taplo_fmt_node.js",
+			"node": "./taplo_fmt_node.js",
+			"default": "./taplo_fmt_esm.js"
+		},
+		"./esm": {
+			"types": "./taplo_fmt.d.ts",
+			"default": "./taplo_fmt_esm.js"
+		},
+		"./node": {
+			"types": "./taplo_fmt.d.ts",
+			"default": "./taplo_fmt_node.js"
+		},
+		"./bundler": {
+			"types": "./taplo_fmt.d.ts",
+			"default": "./taplo_fmt.js"
+		},
+		"./web": {
+			"types": "./taplo_fmt_web.d.ts",
+			"default": "./taplo_fmt_web.js"
+		},
+		"./vite": {
+			"types": "./taplo_fmt_web.d.ts",
+			"default": "./taplo_fmt_vite.js"
+		},
+		"./wasm": "./taplo_fmt_bg.wasm",
+		"./package.json": "./package.json",
+		"./*": "./*"
+	}
+}
