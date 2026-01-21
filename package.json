@@ -5,7 +5,7 @@
 		"magic-akari <akari.ccino@gmail.com>"
 	],
 	"description": "A WASM Based TOML Formatter",
-	"version": "0.2.4",
+	"version": "0.2.5",
 	"license": "MIT",
 	"repository": {
 		"type": "git",
