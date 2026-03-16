@@ -82,6 +82,12 @@ await init();
 // ...
 ```
 
+Or use the `./bundler` entry with [vite-plugin-wasm](https://www.npmjs.com/package/vite-plugin-wasm)
+
+```javascript
+import { format } from "@wasm-fmt/taplo_fmt/bundler";
+```
+
 ## Entry Points
 
 - `.` - Auto-detects environment (Node.js uses node, Webpack uses bundler, default is ESM)
