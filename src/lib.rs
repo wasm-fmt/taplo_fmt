@@ -1,35 +1,64 @@
 use taplo::formatter::{self, Options, OptionsIncomplete};
-use wasm_bindgen::prelude::*;
 
 #[cfg(test)]
 mod tests;
 
-#[wasm_bindgen(typescript_custom_section)]
-const TS_Types: &'static str = r#"
-import type { Options } from "./taplo_fmt_options.d.ts";
-export type * from "./taplo_fmt_options.d.ts";
-"#;
+#[cfg(target_arch = "wasm32")]
+mod wasm_random {
+    use std::sync::atomic::{AtomicU32, Ordering};
 
-#[wasm_bindgen]
-extern "C" {
-    #[wasm_bindgen(typescript_type = "Options")]
-    pub type Config;
+    // Taplo's ahash dependency requests 64 random bytes once for hash seeds.
+    // Bridge modules are import-free, so use a per-instance non-cryptographic
+    // generator instead of getrandom's wasm-bindgen-backed JavaScript backend.
+    static STATE: AtomicU32 = AtomicU32::new(0x6d2b_79f5);
+
+    #[unsafe(no_mangle)]
+    unsafe extern "Rust" fn __getrandom_v03_custom(
+        dest: *mut u8,
+        len: usize,
+    ) -> Result<(), getrandom::Error> {
+        if len == 0 {
+            return Ok(());
+        }
+
+        let mut state = STATE
+            .fetch_add(0x9e37_79b9, Ordering::Relaxed)
+            .wrapping_add(dest as usize as u32)
+            .wrapping_add(len as u32);
+        let output = unsafe { std::slice::from_raw_parts_mut(dest, len) };
+
+        for byte in output {
+            state ^= state << 13;
+            state ^= state >> 17;
+            state ^= state << 5;
+            *byte = state as u8;
+        }
+
+        STATE.store(state, Ordering::Relaxed);
+        Ok(())
+    }
+}
+
+#[bridge::config]
+#[derive(Clone, Debug, Default)]
+struct TaploConfig(OptionsIncomplete);
+
+impl bridge::Config for TaploConfig {
+    fn decode(bytes: &[u8]) -> Result<Self, String> {
+        if bytes.is_empty() {
+            return Ok(Self::default());
+        }
+
+        serde_json::from_slice(bytes)
+            .map(Self)
+            .map_err(|err| err.to_string())
+    }
 }
 
 /// Formats the given TOML code with the provided options.
-#[wasm_bindgen]
-pub fn format(
-    #[wasm_bindgen(param_description = "The TOML code to format")] code: &str,
-    #[wasm_bindgen(param_description = "Formatting options")] options: Option<Config>,
-) -> Result<String, String> {
-    let options = options
-        .map(Into::into)
-        .map(serde_wasm_bindgen::from_value)
-        .transpose()
-        .map_err(|e| e.to_string())?
-        .unwrap_or_default();
-
-    Ok(format_impl(code, options))
+#[bridge::formatter]
+fn format(source: &str, config: &TaploConfig) -> Result<String, String> {
+    Ok(format_impl(source, config.0.clone()))
 }
 
 pub(crate) fn format_impl(code: &str, options: OptionsIncomplete) -> String {

@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 import { dirname, basename, join } from "node:path";
 import { parseSnapshot } from "../test_utils/index.js";
 
-import { format } from "../pkg/taplo_fmt_node.js";
+import { createConfig, format, releaseConfig } from "../pkg/taplo_fmt_node.js";
 
 const project_root = fileURLToPath(import.meta.resolve("../"));
 const snapshots_root = fileURLToPath(import.meta.resolve("../test_snapshots"));
@@ -40,3 +40,23 @@ for await (const snap_path of glob("**/*.snap", { cwd: snapshots_root })) {
 		assert.equal(actual, expected);
 	});
 }
+
+test("inline and registered config", () => {
+	const input = 'name="example"\nvalues=[1,2,3]\n';
+	const options = { indent_entries: true, column_width: 20 };
+	const expected = format(input, options);
+	const handle = createConfig(options);
+
+	assert.equal(format(input, "taplo.toml", options), expected);
+	try {
+		assert.equal(format(input, handle), expected);
+	} finally {
+		releaseConfig(handle);
+	}
+
+	assert.throws(() => format(input, handle), /unknown or released config handle/);
+});
+
+test("invalid JSON config is rejected during registration", () => {
+	assert.throws(() => createConfig("{"), /EOF while parsing an object/);
+});

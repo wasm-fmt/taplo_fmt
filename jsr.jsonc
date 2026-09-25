@@ -13,10 +13,13 @@
 		"include": [
 			"taplo_fmt_*",
 			"taplo_fmt.*",
-			"README.md"
+			"README.md",
+			"LICENSE-MIT",
+			"LICENSE-APACHE"
 		],
 		"exclude": [
 			"!*"
 		]
-	}
+	},
+	"license": "MIT OR Apache-2.0"
 }
